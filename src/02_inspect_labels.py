@@ -2,34 +2,37 @@ import pandas as pd
 import pickle
 import os
 
-# POINT THIS TO YOUR LABEL FILE
-# It might be named 'annotation_training.pkl' or similar
-LABEL_PATH = "data/ground_truth/annotation_training.pkl" 
+LABEL_PATH = "data/ground_truth/train-annotation/annotation_training.pkl" 
 
 if not os.path.exists(LABEL_PATH):
-    print("❌ File not found. Check the path!")
+    print("File not found. Check the path!")
 else:
     try:
         # Try loading as Pickle (Common for ChaLearn)
         with open(LABEL_PATH, 'rb') as f:
             data = pickle.load(f, encoding='latin1')
         
-        print("✅ Loaded as Pickle!")
-        print(f"Type of data: {type(data)}")
+        print("Success! File opened.")
         
-        # Usually it's a Dictionary or DataFrame. Let's peek.
         if isinstance(data, dict):
-            keys = list(data.keys())
-            print(f"Keys: {keys[:5]}")
-            print(f"First Item: {data[keys[0]]}")
-        elif isinstance(data, pd.DataFrame):
-            print(data.head())
+            # Convert dictionary to DataFrame
+            df = pd.DataFrame.from_dict(data, orient='index')
             
-    except Exception as e:
-        print("Not a pickle file. Trying CSV...")
-        try:
-            df = pd.read_csv(LABEL_PATH)
-            print("✅ Loaded as CSV!")
+            # Reset index so 'filename' becomes a column
+            df.index.name = 'video_name'
+            df.reset_index(inplace=True)
+            
+            print(f"📊 Found scores for {len(df)} videos.")
+            print("\n--- First 5 Rows ---")
             print(df.head())
-        except Exception as e2:
-            print(f"❌ Could not read file: {e2}")
+            
+            # CHECK: Do the filenames match your processed audio?
+            first_video = df.iloc[0]['video_name']
+            print(f"\nExample Label: {first_video}")
+            print(f"Example Audio: {first_video.replace('.mp4', '.wav')}")
+            
+        else:
+            print("Data format is not a dictionary. It looks like:", type(data))
+
+    except Exception as e:
+        print(f"Error reading pickle: {e}")
