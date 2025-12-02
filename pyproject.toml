@@ -1,19 +1,38 @@
 [project]
 name = "project"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Multi-Modal AI system to predict personality from voice."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = "==3.11.*"
 dependencies = [
-    "librosa>=0.11.0",
-    "moviepy>=2.2.1",
-    "numpy>=2.3.5",
-    "openai-whisper>=20250625",
-    "pandas>=2.3.3",
-    "soundfile>=0.13.1",
-    "torch>=2.9.1",
-    "torchaudio>=2.9.1",
-    "torchvision>=0.24.1",
-    "tqdm>=4.67.1",
-    "transformers>=4.57.1",
+    "librosa>=0.10.0",
+    "moviepy>=1.0.3",
+    "numpy<2.0.0", 
+    "openai-whisper>=20231117",
+    "pandas>=2.0.0",
+    "soundfile>=0.12.1",
+    "torch>=2.0.0",
+    "torchaudio>=2.0.0",
+    "torchvision>=0.15.0",
+    "tqdm>=4.65.0",
+    "transformers>=4.48.0",
+    "gradio>=4.0.0",
+    "matplotlib>=3.7.0"
 ]
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[[tool.uv.index]]
+name = "pytorch_cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch_cu118" }]
+torchvision = [{ index = "pytorch_cu118" }]
+torchaudio = [{ index = "pytorch_cu118" }]
