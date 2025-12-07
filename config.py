@@ -16,15 +16,15 @@ LABELS_PATH = os.path.join(DATA_DIR, "ground_truth", "train-annotation", "annota
 # --- DATA PROCESSING ---
 SAMPLE_Rate = 16000
 MAX_DURATION = 15
-DATA_LIMIT = 50       
+DATA_LIMIT = None 
 
 # --- MODEL HYPERPARAMETERS ---
 MODEL_NAME = "answerdotai/ModernBERT-base"
 MAX_TEXT_LEN = 2048
 
-BATCH_SIZE = 8
-LEARNING_RATE = 1e-4
-EPOCHS = 20
+BATCH_SIZE = 16
+LEARNING_RATE = 1e-5
+EPOCHS = 200
 HIDDEN_DIM = 128 # Size of the acoustic LSTM memory
 DROPOUT = 0.2
 

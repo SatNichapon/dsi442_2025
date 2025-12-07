@@ -49,10 +49,9 @@ def load_labels(path: str = config.LABELS_PATH) -> pd.DataFrame:
     keys = list(data.keys())
     first_key = str(keys[0])
     
-    print(f"  Detected pickle keys (first 3): {keys[:3]}")
+    print(f"  Detected pickle keys: {keys}")
 
     # SCENARIO A: Trait-First Structure (e.g. {'openness': {'vid1': 0.5}, ...})
-    # This is likely what you have.
     if 'openness' in keys or 'extraversion' in keys:
         print("  Detected Trait-First structure. Pivoting...")
         # pd.DataFrame(data) automatically aligns keys as Columns and nested keys as Index

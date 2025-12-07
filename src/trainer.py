@@ -24,12 +24,19 @@ def train_model():
     # 2. Init Model
     model = DigitalSoulModel().to(config.DEVICE)
     optimizer = optim.Adam(model.parameters(), lr=config.LEARNING_RATE)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+
     criterion = nn.L1Loss() # Mean Absolute Error (MAE)
     
+    # --- TRACKING VARIABLES ---
+    best_val_loss = float('inf')
+    patience_counter = 0
+    PATIENCE_LIMIT = 15  # Stop if no improvement for 15 epochs
+
     # 3. Loop
     for epoch in range(config.EPOCHS):
         model.train()
-        total_loss = 0
+        total_train_loss = 0
         
         for ling, acou, labels in train_loader:
             ling, acou, labels = ling.to(config.DEVICE), acou.to(config.DEVICE), labels.to(config.DEVICE)
@@ -40,23 +47,39 @@ def train_model():
             loss.backward()
             optimizer.step()
             
-            total_loss += loss.item()
+            total_train_loss += loss.item()
             
-        avg_train_loss = total_loss / len(train_loader)
+        avg_train_loss = total_train_loss / len(train_loader)
         
         # Validation
         model.eval()
-        val_loss = 0
+        total_val_loss = 0
         with torch.no_grad():
             for ling, acou, labels in val_loader:
                 ling, acou, labels = ling.to(config.DEVICE), acou.to(config.DEVICE), labels.to(config.DEVICE)
                 outputs = model(ling, acou)
-                val_loss += criterion(outputs, labels).item()
+                total_val_loss += criterion(outputs, labels).item()
         
-        avg_val_loss = val_loss / len(val_loader)
+        avg_val_loss = total_val_loss / len(val_loader)
+
+        # Update Scheduler
+        scheduler.step(avg_val_loss)
         
         print(f"Epoch [{epoch+1}/{config.EPOCHS}] - Train MAE: {avg_train_loss:.4f} | Val MAE: {avg_val_loss:.4f}")
         
-    # Save Final
-    save_checkpoint(model, optimizer, filename="digital_soul_final.pth")
+        # --- SAVE BEST MODEL ---
+        if avg_val_loss < best_val_loss:
+            best_val_loss = avg_val_loss
+            patience_counter = 0 # Reset counter
+            print(f"   🔥 New Best Model! (MAE: {best_val_loss:.4f}) -> Saving...")
+            save_checkpoint(model, optimizer, filename="digital_soul_final.pth")
+        else:
+            patience_counter += 1
+            
+        # --- EARLY STOPPING ---
+        if patience_counter >= PATIENCE_LIMIT:
+            print(f"\n🛑 Early Stopping triggered! No improvement for {PATIENCE_LIMIT} epochs.")
+            print(f"   Best Validation MAE was: {best_val_loss:.4f}")
+            break
+
     print("🏁 Training Complete!")

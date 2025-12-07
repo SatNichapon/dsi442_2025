@@ -33,7 +33,7 @@ def main():
     if args.mode in ['extract', 'all']:
         engine = FeatureEngine()
         engine.run_batch()
-        
+
     if args.mode in ['train', 'all']:
         train_model()
 
