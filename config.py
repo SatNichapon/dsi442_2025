@@ -22,10 +22,10 @@ DATA_LIMIT = None
 MODEL_NAME = "answerdotai/ModernBERT-base"
 MAX_TEXT_LEN = 2048
 
-BATCH_SIZE = 16
+BATCH_SIZE = 32
 LEARNING_RATE = 1e-5
 EPOCHS = 200
-HIDDEN_DIM = 128 # Size of the acoustic LSTM memory
+HIDDEN_DIM = 256 # Size of the acoustic LSTM memory
 DROPOUT = 0.2
 
 # --- HARDWARE ---
