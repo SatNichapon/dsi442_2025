@@ -16,7 +16,7 @@ LABELS_PATH = os.path.join(DATA_DIR, "ground_truth", "train-annotation", "annota
 # --- DATA PROCESSING ---
 SAMPLE_Rate = 16000
 MAX_DURATION = 15
-DATA_LIMIT = None 
+DATA_LIMIT = None
 
 # --- MODEL HYPERPARAMETERS ---
 MODEL_NAME = "answerdotai/ModernBERT-base"
