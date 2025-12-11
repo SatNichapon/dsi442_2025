@@ -78,6 +78,12 @@ Launch the web interface to test the model with your own voice.
 * Upload a `.wav` or `.mp3` file.
 * View your Personality Radar Chart.
 
+## 📄 Documentation
+
+Find the official presentation materials for this project below:
+
+* **[📊 Digital Soul Poster (PDF)](docs/Digital_Soul_Poster.pdf)**
+
 ## 📂 Project Structure
 ```
 Digital_Soul/
