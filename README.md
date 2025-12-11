@@ -34,9 +34,7 @@ This project uses `uv` for ultra-fast dependency management.
 
 2. **Initialize environment with uv:**
 
-    ```bash
-    uv sync --no-install-project
-    ```
+        uv sync --no-install-project
 
 *This installs PyTorch (GPU enabled), Transformers, Librosa, and all other dependencies.*
 
@@ -48,9 +46,8 @@ Converts raw video files (`.mp4`) into standardized audio files (`.wav`, 16kHz, 
 * *Input:* `data/raw_videos/`
 * *Output:* `data/processed_audio/`
 
-    ```bash
-    uv run main.py prep
-    ```
+        uv run main.py prep
+
 
 2. **Feature Extraction** (`extract`)
 Extracts mathematical features from the audio.
@@ -58,28 +55,24 @@ Extracts mathematical features from the audio.
 * **Acoustic**: Extracts MFCCs via Librosa (13 dim).
 * *Output:* `.npy` files in `data/features/`
 
+        uv run main.py extract
+
 3. **Model Training** (`train`)
 Trains the Multi-Modal Neural Network using the extracted features.
 * **Config:** 50 Epochs, Adam Optimizer, Early Stopping.
 * *Output:* Saves the best model to `checkpoints/digital_soul_final.pth.`
 
-    ```bash
-    uv run main.py train
-    ```
+        uv run main.py train
 
 4. **Evaluation** (`evaluate`)
 Runs a full suite of scientific tests (Accuracy, Ablation, Latency, Correlation) and generates charts in `results/`.
 
-    ```bash
-    uv run evaluate.py
-    ```
+        uv run evaluate.py
 
 ## 🎮 Interactive Demo
 Launch the web interface to test the model with your own voice.
 
-    ```bash
     uv run app.py
-    ```
 
 * Open the local URL (e.g., `http://127.0.0.1:7860`) in your browser.
 * Upload a `.wav` or `.mp3` file.
@@ -111,7 +104,8 @@ Digital_Soul/
 This project uses the **ChaLearn First Impressions V2** dataset.
 * **Size:** ~10,000 video clips (15s average).
 * **Labels:** Big Five Personality Traits (0.0 - 1.0).
-*Note: Dataset must be obtained via official challenge channels.*
+* *Note: Dataset must be obtained via official challenge channels.*
+
 
 ## 📄 License
 This project is for academic purposes.
